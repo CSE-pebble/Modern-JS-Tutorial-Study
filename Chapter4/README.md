@@ -87,3 +87,77 @@ menu = {
 multiplyNumeric은 아무것도 반환하지 않아도 괜찮습니다. 객체 자체를 수정해주기만 하면 됩니다.
 
 힌트: typeof를 사용하면 프로퍼티 값이 숫자인지 확인할 수 있습니다.
+
+## 객체 리터럴에서 'this' 사용하기
+
+함수 makeUser는 객체를 반환합니다.
+
+이 객체의 ref에 접근하면 어떤 결과가 발생하고, 그 이유는 뭘까요?
+
+```js
+function makeUser() {
+  return {
+    name: "John",
+    ref: this,
+  };
+}
+
+let user = makeUser();
+
+alert(user.ref.name); // 결과가 어떻게 될까요?
+```
+
+> 정답 : 에러가 발생한다. <br><br> 기억하자. `this` 값은 **함수 호출 시점**에 결정된다.<br> 주석에 쓴 코드 라인 (\*)을 보면 알 수 있듯 함수를 호출하는 시점에 `this`에 객체가 할당된다. 하지만 해당 시점에 `this`가 참조할 만한 객체가 존재하지 않으므로 `this`에는 `undefined`가 할당된다. 즉 `user.ref`는 `undefined` 값이 할당되고, 그에 따라 `undefined`의 프로퍼티에 접근하려고 하니까 에러가 발생하는 것이다.
+
+## calculator
+
+### 계산기 만들기
+
+calculator라는 객체를 만들고 세 메서드를 구현해 봅시다.
+
+read()에선 프롬프트 창을 띄우고 더할 값 두 개를 입력받습니다. 입력받은 값은 객체의 프로퍼티에 저장합니다.
+sum()은 저장된 두 값의 합을 반환합니다.
+mul()은 저장된 두 값의 곱을 반환합니다.
+
+```js
+let calculator = {
+  // ... 여기에 답안 작성 ...
+};
+
+calculator.read();
+alert(calculator.sum());
+alert(calculator.mul());
+```
+
+## chaining
+
+### 체이닝
+
+올라가기(up)와 내려가기(down) 메서드를 제공하는 객체 ladder가 있습니다.
+
+```js
+let ladder = {
+  step: 0,
+  up() {
+    this.step++;
+  },
+  down() {
+    this.step--;
+  },
+  showStep: function () {
+    // 사다리에서 몇 번째 단에 올라와 있는지 보여줌
+    alert(this.step);
+  },
+};
+```
+
+메서드를 연이어 호출하고자 한다면 아래와 같이 코드를 작성할 수 있습니다.
+
+```js
+ladder.up();
+ladder.up();
+ladder.down();
+ladder.showStep(); // 1
+```
+
+`up`, `down`, `showStep`을 수정해 아래처럼 메서드 호출 체이닝이 가능하도록 해봅시다.
